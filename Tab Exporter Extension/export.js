@@ -2,17 +2,17 @@ var targetWindow = null;
 var tabCount = 0;
 
 function start(tab) {
-    chrome.windows.getCurrent(getWindows);
+    safari.windows.getCurrent(getWindows);
 }
 
 function getWindows(win) {
     targetWindow = win;
-    chrome.tabs.getAllInWindow(targetWindow.id, getTabs);
+    safari.tabs.getAllInWindow(targetWindow.id, getTabs);
 }
 
 function getTabs(tabs) {
     tabCount = tabs.length;
-    chrome.windows.getAll({"populate" : true}, expTabs);
+    safari.windows.getAll({"populate" : true}, expTabs);
 }
 
 function expTabs(windows) {
@@ -37,7 +37,7 @@ function expTabs(windows) {
 function openTabs() {
     var content = document.getElementById('content').value;
     var rExp = new RegExp(
-                          "(^|[ \t\r\n])((ftp|http|https|news|file|view-source|chrome):(([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;/?:@&~=%-]*))?([A-Za-z0-9$_+!*();/?:~-])*)"
+                          "(^|[ \t\r\n])((ftp|http|https|news|file|view-source|safari):(([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;/?:@&~=%-]*))?([A-Za-z0-9$_+!*();/?:~-])*)"
                           ,"g"
                           );
     var newTabs = content.match(rExp);
@@ -45,7 +45,7 @@ function openTabs() {
         var newTabsLen = newTabs.length;
         for (var j = 0; j < newTabsLen; j++) {
             var nt = newTabs[j];
-            chrome.tabs.create({url: nt, active: false });
+            safari.tabs.create({url: nt, active: false });
         }
     } else {
         alert('Only fully qualified URLs will be opened.');
